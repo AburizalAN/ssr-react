@@ -4,32 +4,40 @@ import fs from 'fs'
 import React from 'react'
 import * as ReactDOMServer from 'react-dom/server'
 import express from 'express'
+import cors from 'cors'
 
 import App from '../src/App'
 
-const PORT = process.env.PORT || 3000
 const app = express()
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+// const isDevelopment = process.env.NODE_ENV === 'development'
+const isDevelopment = false
 
-app.get('/', (req, res) => {
-  console.log("isDevelopment: ", isDevelopment)
-  const app = ReactDOMServer.renderToString(<App />)
-  const indexFile = path.resolve(isDevelopment ? './public/index.html' : './build/index.html')
+app.use(cors())
+app.use(express.static('./build'))
 
-  fs.readFile(indexFile, 'utf8', (err, data) => {
-    if (err) {
-      console.log('Something went wrong:', err)
-      return res.status(500).send('Oops, better luck next time!')
-    }
-
-    return res.send(
-      data.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
-    )
-  })
+app.get('*', (req, res) => {
+  const app = ReactDOMServer.renderToString(<App name={"Abuuu"} />)
+  
+  res.send(`
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>This is Secret Project</title>
+        <script defer="defer" src="bundle.js"></script>
+      </head>
+      <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root">${app}</div>
+      </body>
+    </html>
+  `)
 })
 
-app.use(express.static('./build'))
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)
