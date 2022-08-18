@@ -5,6 +5,6 @@ import App from './App';
 const root = document.getElementById('root');
 ReactDOM.hydrateRoot(root, (
   <React.StrictMode>
-    <App name={"Abuuu"} />
+    <App serverData={window.INITIAL_DATA} />
   </React.StrictMode>
 ));

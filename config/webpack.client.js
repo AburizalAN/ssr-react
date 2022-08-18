@@ -4,16 +4,11 @@ const path = require("path");
 const webpack = require("webpack");
 
 const prodConfig = {
-  mode: "production",
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, "../", "build"),
     filename: "bundle.js",
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      __isBrowser__: "true",
-    }),
-  ],
 }
 
 module.exports = merge(commonConfig, prodConfig);
