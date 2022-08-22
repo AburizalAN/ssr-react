@@ -5,6 +5,7 @@ const webpack = require("webpack");
 
 const prodConfig = {
   entry: './src/index.js',
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "../", "build"),
     filename: "bundle.js",

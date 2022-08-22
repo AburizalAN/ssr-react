@@ -7,9 +7,9 @@ import express from 'express'
 import cors from 'cors'
 import serialize from 'serialize-javascript'
 import { fetchPopularRepos } from '../src/api'
-import { ServerStyleSheet } from 'styled-components';
+import { StaticRouter } from 'react-router-dom/server'
 
-import App from '../src/App'
+import Routes from '../src/Routes'
 
 const app = express()
 
@@ -22,7 +22,11 @@ app.use(express.static('./build'))
 app.get('*', (req, res) => {
   fetchPopularRepos()
     .then((data) => {
-      const app = ReactDOMServer.renderToString(<App serverData={data} />)
+      const app = ReactDOMServer.renderToString(
+        <StaticRouter location={req.url}>
+          <Routes />
+        </StaticRouter>
+      )
       
       res.send(`
         <!doctype html>

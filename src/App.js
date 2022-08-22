@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import styled from 'styled-components'
+import Routes from "./Routes"
 
 const GridContainer = styled.div`
   display: grid;
@@ -25,7 +26,7 @@ const App = ({ serverData }) => {
 
   return (
     <GridContainer>
-      <GridItem>test satu dua</GridItem>
+      <Routes />
     </GridContainer>
   )
 }
