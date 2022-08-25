@@ -8,6 +8,8 @@ import cors from 'cors'
 import serialize from 'serialize-javascript'
 import { fetchPopularRepos } from '../src/api'
 import { StaticRouter } from 'react-router-dom/server'
+import { Provider } from 'react-redux'
+import store from '../src/store'
 
 import Routes from '../src/Routes'
 
@@ -23,9 +25,11 @@ app.get('*', (req, res) => {
   fetchPopularRepos()
     .then((data) => {
       const app = ReactDOMServer.renderToString(
-        <StaticRouter location={req.url}>
-          <Routes />
-        </StaticRouter>
+        <Provider store={store}>
+          <StaticRouter location={req.url}>
+            <Routes />
+          </StaticRouter>
+        </Provider>
       )
       
       res.send(`

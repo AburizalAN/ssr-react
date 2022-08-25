@@ -1,7 +1,7 @@
 import globalTypes from './types';
 
 const initialState = {
-  test: 'test',
+  users: [],
 }
 
 const globalReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const globalReducer = (state = initialState, action) => {
     case globalTypes.SET_GLOBAL_TEST:
       return {
         ...state,
-        test: action.payload,
+        users: action.payload,
       }
     default:
       return state
