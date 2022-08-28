@@ -10,14 +10,12 @@ const Home = () => {
     dispatch(fetchDataUsers())
   }, [])
 
-  console.log('users', users)
-
   return (
     <div>
       <ul>
         {users && users.length > 0 ? (
           users.map((user, index) => (
-            <li>{`${user.name.title} ${user.name.first} ${user.name.last}`}</li>
+            <li key={index}>{`${user.name.title} ${user.name.first} ${user.name.last}`}</li>
           ))
         ) : (
           <li>No users</li>
@@ -25,6 +23,10 @@ const Home = () => {
       </ul>
     </div>
   )
+}
+
+export const loadData = (store) => {
+  return store.dispatch(fetchDataUsers())
 }
 
 export default Home

@@ -10,8 +10,9 @@ import { fetchPopularRepos } from '../src/api'
 import { StaticRouter } from 'react-router-dom/server'
 import { Provider } from 'react-redux'
 import store from '../src/store'
+import { matchRoutes, renderMatches } from 'react-router'
 
-import Routes from '../src/Routes'
+import { ListRoutes } from '../src/Routes'
 
 const app = express()
 
@@ -21,35 +22,44 @@ const isDevelopment = false
 app.use(cors())
 app.use(express.static('./build'))
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 app.get('*', (req, res) => {
-  fetchPopularRepos()
-    .then((data) => {
-      const app = ReactDOMServer.renderToString(
-        <Provider store={store}>
-          <StaticRouter location={req.url}>
-            <Routes />
-          </StaticRouter>
-        </Provider>
-      )
-      
-      res.send(`
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-            <title>This is Secret Project</title>
-            <script defer="defer" src="bundle.js"></script>
-            <script>window.INITIAL_DATA = ${serialize(data)}</script>
-          </head>
-          <body>
-            <noscript>You need to enable JavaScript to run this app.</noscript>
-            <div id="root">${app}</div>
-          </body>
-        </html>
-      `)
-    })
+
+  const matches = matchRoutes(ListRoutes, req.path)
+
+  const promises = matches.map(({ route }) => {
+    return route.loadData ? route.loadData(store) : null
+  })
+
+  Promise.all(promises).then(() => {
+    const app = ReactDOMServer.renderToString(
+      <Provider store={store}>
+        <StaticRouter location={req.url}>
+          <div>
+            {renderMatches(matches)}
+          </div>
+        </StaticRouter>
+      </Provider>
+    )
+    
+    res.send(`
+      <!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>This is Secret Project</title>
+          <script defer="defer" src="bundle.js"></script>
+        </head>
+        <body>
+          <noscript>You need to enable JavaScript to run this app.</noscript>
+          <div id="root">${app}</div>
+        </body>
+      </html>
+    `)
+  })
 })
 
 const PORT = process.env.PORT || 3000
