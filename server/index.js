@@ -51,7 +51,7 @@ app.get('*', (req, res) => {
           <meta name="viewport" content="width=device-width,initial-scale=1">
           <title>This is Secret Project</title>
           <script>
-            window.INITIAL_STATE = ${JSON.stringify(storeServer.getState())}
+            window.INITIAL_STATE = ${serialize(storeServer.getState())}
           </script>
           <script defer="defer" src="bundle.js"></script>
         </head>
