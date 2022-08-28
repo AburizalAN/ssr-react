@@ -6,6 +6,7 @@ const Home = () => {
   const dispatch = useDispatch()
   const { users } = useSelector((state) => state.global)
 
+  
   useEffect(() => {
     dispatch(fetchDataUsers())
   }, [])

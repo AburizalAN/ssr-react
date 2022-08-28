@@ -4,9 +4,11 @@ import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import { renderMatches, Location } from 'react-router';
 import { Provider } from 'react-redux';
-import store from './store';
+import { storeClient } from './store';
 
 const root = document.getElementById('root');
+
+const store = storeClient(window.INITIAL_STATE)
 
 ReactDOM.hydrateRoot(root, (
   <React.StrictMode>
