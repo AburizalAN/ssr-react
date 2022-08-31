@@ -1,18 +1,12 @@
 import path from 'path'
 import fs from 'fs'
 import fetch from 'isomorphic-fetch'
-
-import React from 'react'
-import * as ReactDOMServer from 'react-dom/server'
 import express from 'express'
 import cors from 'cors'
-import serialize from 'serialize-javascript'
-import { StaticRouter } from 'react-router-dom/server'
-import { Provider } from 'react-redux'
 import { storeServer } from '../src/store'
-import { matchRoutes, renderMatches } from 'react-router'
-
+import { matchRoutes } from 'react-router'
 import { ListRoutes } from '../src/Routes'
+import renderer from './renderer'
 
 const app = express()
 
@@ -32,35 +26,7 @@ app.get('*', (req, res) => {
   })
 
   Promise.all(promises).then(() => {
-    const app = ReactDOMServer.renderToString(
-      <Provider store={storeServer}>
-        <StaticRouter location={req.url}>
-          <div>
-            {renderMatches(matches)}
-          </div>
-        </StaticRouter>
-      </Provider>
-    )
-    
-    res.send(`
-      <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <meta name="viewport" content="width=device-width,initial-scale=1">
-          <title>This is Secret Project</title>
-          <script>
-            window.INITIAL_STATE = ${serialize(storeServer.getState())}
-          </script>
-          <script defer="defer" src="bundle.js"></script>
-        </head>
-        <body>
-          <noscript>You need to enable JavaScript to run this app.</noscript>
-          <div id="root">${app}</div>
-        </body>
-      </html>
-    `)
+    res.send(renderer(req, storeServer, matches))
   })
 })
 
