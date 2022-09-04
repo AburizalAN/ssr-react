@@ -1,8 +1,9 @@
 import path from 'path'
 import fs from 'fs'
-import fetch from 'isomorphic-fetch'
+import axios from 'axios'
 import express from 'express'
 import cors from 'cors'
+import proxy from 'express-http-proxy'
 import { storeServer } from '../src/store'
 import { matchRoutes } from 'react-router'
 import { ListRoutes } from '../src/Routes'
@@ -14,19 +15,28 @@ const app = express()
 const isDevelopment = false
 
 app.use(cors())
-app.use(express.static('./build'))
 
+app.use(
+  '/api',
+  proxy('http://react-ssr-api.herokuapp.com', {
+    proxyReqOptDecorator(opts) {
+      opts.headers['x-forwarded-host'] = 'localhost:3000';
+      return opts;
+    }
+  })
+)
+app.use(express.static('./build'));
 app.get('/favicon.ico', (req, res) => res.status(204));
-
 app.get('*', (req, res) => {
+  const store = storeServer(req)
   const matches = matchRoutes(ListRoutes, req.path)
 
   const promises = matches.map(({ route }) => {
-    return route.loadData ? route.loadData(storeServer) : null
+    return route.loadData ? route.loadData(store) : null
   })
 
   Promise.all(promises).then(() => {
-    res.send(renderer(req, storeServer, matches))
+    res.send(renderer(req, store, matches))
   })
 })
 
