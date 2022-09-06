@@ -2,9 +2,11 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchDataUsers } from "../store/global/actions"
 
-const Home = () => {
+const Home = ({ route }) => {
   const dispatch = useDispatch()
   const { users } = useSelector((state) => state.global)
+
+  console.log("route check", route)
 
   
   useEffect(() => {

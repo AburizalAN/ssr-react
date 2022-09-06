@@ -4,14 +4,13 @@ import serialize from 'serialize-javascript'
 import { StaticRouter } from 'react-router-dom/server'
 import { Provider } from 'react-redux'
 import { renderMatches } from 'react-router'
+import App from '../src/App'
 
 const renderer = (req, store, matches) => {
   const app = ReactDOMServer.renderToString(
     <Provider store={store}>
       <StaticRouter location={req.url}>
-        <div>
-          {renderMatches(matches)}
-        </div>
+        <App routes={() => renderMatches(matches)} />
       </StaticRouter>
     </Provider>
   )

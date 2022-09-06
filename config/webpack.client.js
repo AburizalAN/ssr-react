@@ -3,13 +3,13 @@ const commonConfig = require('./webpack.common');
 const path = require("path");
 const webpack = require("webpack");
 
-const prodConfig = {
+const clientConfig = {
   entry: './src/index.js',
-  mode: "production",
+  mode: "development",
   output: {
     path: path.resolve(__dirname, "../", "build"),
     filename: "bundle.js",
   },
 }
 
-module.exports = merge(commonConfig, prodConfig);
+module.exports = merge(commonConfig, clientConfig);

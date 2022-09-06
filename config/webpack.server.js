@@ -5,6 +5,7 @@ const nodeExternals = require('webpack-node-externals')
 const webpack = require("webpack");
 
 serverConfig = {
+  mode: 'development',
   entry: './server/index.js',
   target: 'node',
   externals: [nodeExternals()],
