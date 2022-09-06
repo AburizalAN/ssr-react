@@ -5,9 +5,9 @@ import { StaticRouter } from 'react-router-dom/server'
 import { Provider } from 'react-redux'
 import { renderMatches } from 'react-router'
 
-const renderer = (req, storeServer, matches) => {
+const renderer = (req, store, matches) => {
   const app = ReactDOMServer.renderToString(
-    <Provider store={storeServer}>
+    <Provider store={store}>
       <StaticRouter location={req.url}>
         <div>
           {renderMatches(matches)}
@@ -25,12 +25,11 @@ const renderer = (req, storeServer, matches) => {
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>This is Secret Project</title>
         <script>
-          window.INITIAL_STATE = ${serialize(storeServer.getState())}
+          window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script defer="defer" src="bundle.js"></script>
       </head>
       <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root">${app}</div>
       </body>
     </html>

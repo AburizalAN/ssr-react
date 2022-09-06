@@ -1,8 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import Routes from './Routes';
+import MainRoutes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
-import { renderMatches, Location } from 'react-router';
 import { Provider } from 'react-redux';
 import { storeClient } from './store';
 
@@ -15,7 +14,7 @@ ReactDOM.hydrateRoot(root, (
     <Provider store={store}>
       <BrowserRouter>
         <div>
-          <Routes />
+          <MainRoutes />
         </div>
       </BrowserRouter>
     </Provider>

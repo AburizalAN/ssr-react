@@ -11,8 +11,6 @@ const Home = () => {
     dispatch(fetchDataUsers())
   }, [])
 
-  console.log('users', users)
-
   return (
     <div>
       <ul>
@@ -28,8 +26,11 @@ const Home = () => {
   )
 }
 
-export const loadData = (store) => {
+const loadData = (store) => {
   return store.dispatch(fetchDataUsers())
 }
 
-export default Home
+export default {
+  element: <Home />,
+  loadData: loadData,
+}

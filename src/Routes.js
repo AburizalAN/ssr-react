@@ -1,27 +1,22 @@
-import { Route, Routes } from 'react-router-dom'
-import Home, { loadData } from './components/Home'
+import { renderMatches, matchRoutes, useLocation } from 'react-router-dom'
+import Home from './pages/Home'
+import LoginApp from './pages/LoginApp'
 
 const Index = () => {
-  return (
-    <Routes>
-      {ListRoutes.map((route) => (
-        <Route exact={route.exact} path={route.path} element={route.element} />
-      )) }
-      <Route path='/test' element={"uhuhuhaahay"} />
-    </Routes>
-  )
+  const location = useLocation()
+  let matches = matchRoutes(ListRoutes, location.pathname)
+  return renderMatches(matches)
 }
 
 export const ListRoutes = [
   {
-    loadData: loadData,
+    ...Home,
     path: '/',
-    element: <Home />,
     exact: true,
   },
   {
-    path: '/test',
-    element: "test",
+    ...LoginApp,
+    path: '/login',
   },
 ]
 

@@ -15,7 +15,6 @@ const app = express()
 const isDevelopment = false
 
 app.use(cors())
-
 app.use(
   '/api',
   proxy('http://react-ssr-api.herokuapp.com', {
@@ -29,7 +28,7 @@ app.use(express.static('./build'));
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.get('*', (req, res) => {
   const store = storeServer(req)
-  const matches = matchRoutes(ListRoutes, req.path)
+  let matches = matchRoutes(ListRoutes, req.path)
 
   const promises = matches.map(({ route }) => {
     return route.loadData ? route.loadData(store) : null
