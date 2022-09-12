@@ -5,16 +5,21 @@ import { StaticRouter } from 'react-router-dom/server'
 import { Provider } from 'react-redux'
 import { renderMatches } from 'react-router'
 import App from '../src/App'
+import { ServerStyleSheet } from 'styled-components'
+
+const sheet = new ServerStyleSheet()
 
 const renderer = (req, store, matches) => {
-  const app = ReactDOMServer.renderToString(
+  const app = ReactDOMServer.renderToString(sheet.collectStyles(
     <Provider store={store}>
       <StaticRouter location={req.url}>
         <App routes={() => renderMatches(matches)} />
       </StaticRouter>
     </Provider>
-  )
-  
+  ))
+  const styleTags = sheet.getStyleTags()
+  sheet.seal()
+
   return (`
     <!doctype html>
     <html lang="en">
@@ -27,6 +32,7 @@ const renderer = (req, store, matches) => {
           window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script defer="defer" src="bundle.js"></script>
+        ${styleTags}
       </head>
       <body>
         <div id="root">${app}</div>

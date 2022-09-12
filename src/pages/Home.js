@@ -1,6 +1,13 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchDataUsers } from "../store/global/actions"
+import styled from 'styled-components'
+
+const Test = styled.div`
+  padding: 48px;
+  background-color: blue;
+  color: white;
+`
 
 const Home = ({ route }) => {
   const dispatch = useDispatch()
@@ -14,7 +21,7 @@ const Home = ({ route }) => {
   }, [])
 
   return (
-    <div>
+    <Test>
       <ul>
         {users && users.length > 0 ? (
           users.map((user, index) => (
@@ -24,7 +31,7 @@ const Home = ({ route }) => {
           <li>No users</li>
         )}
       </ul>
-    </div>
+    </Test>
   )
 }
 

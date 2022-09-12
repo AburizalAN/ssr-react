@@ -11,21 +11,18 @@ import renderer from './renderer'
 
 const app = express()
 
-// const isDevelopment = process.env.NODE_ENV === 'development'
-const isDevelopment = false
-
 app.use(cors())
 app.use(
   '/api',
   proxy('http://react-ssr-api.herokuapp.com', {
     proxyReqOptDecorator(opts) {
-      opts.headers['x-forwarded-host'] = 'localhost:3000';
+      opts.headers['x-forwarded-host'] = 'localhost:3000'
       return opts;
     }
   })
 )
-app.use(express.static('./build'));
-app.get('/favicon.ico', (req, res) => res.status(204));
+app.use(express.static('./build'))
+app.get('/favicon.ico', (req, res) => res.status(204))
 app.get('*', (req, res) => {
   const store = storeServer(req)
   let matches = matchRoutes(ListRoutes, req.path)
