@@ -1,4 +1,5 @@
 import { renderRoutes} from 'react-router-config'
+import App from './pages/MainApp'
 import Home from './pages/Home'
 import LoginApp from './pages/LoginApp'
 
@@ -20,7 +21,7 @@ export const listRoutes = [
         path: '/login',
       },
     ]
-  },
+  }
 ]
 
 export default Index

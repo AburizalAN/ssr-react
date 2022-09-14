@@ -1,7 +1,9 @@
-export const MainApp = () => {
+import { renderRoutes } from 'react-router-config'
+
+export const MainApp = ({ route }) => {
   return (
     <div>
-      <h1>This is Main App</h1>
+      {renderRoutes(route.routes)}
     </div>
   )
 }
