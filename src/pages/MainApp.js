@@ -7,7 +7,7 @@ export const MainApp = () => {
 }
 
 export default {
-  element: <MainApp />,
+  component: MainApp,
   loadData: () => {},
   exact: true,
 }

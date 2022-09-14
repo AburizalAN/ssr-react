@@ -40,6 +40,6 @@ const loadData = (store) => {
 }
 
 export default {
-  element: <Home />,
+  component: Home,
   loadData: loadData,
 }

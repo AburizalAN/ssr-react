@@ -7,6 +7,6 @@ export const LoginApp = () => {
 export const loadData = (store) => {}
 
 export default {
-  element: <LoginApp />,
+  component: LoginApp,
   loadData: loadData,
 }

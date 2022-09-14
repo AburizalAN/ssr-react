@@ -5,8 +5,8 @@ import express from 'express'
 import cors from 'cors'
 import proxy from 'express-http-proxy'
 import { storeServer } from '../src/store'
-import { matchRoutes } from 'react-router'
-import { ListRoutes } from '../src/Routes'
+import { matchRoutes } from 'react-router-config'
+import { listRoutes } from '../src/Routes'
 import renderer from './renderer'
 
 const app = express()
@@ -14,25 +14,20 @@ const app = express()
 app.use(cors())
 app.use(
   '/api',
-  proxy('http://react-ssr-api.herokuapp.com', {
-    proxyReqOptDecorator(opts) {
-      opts.headers['x-forwarded-host'] = 'localhost:3000'
-      return opts;
-    }
-  })
+  proxy('http://react-ssr-api.herokuapp.com')
 )
 app.use(express.static('./build'))
 app.get('/favicon.ico', (req, res) => res.status(204))
 app.get('*', (req, res) => {
   const store = storeServer(req)
-  let matches = matchRoutes(ListRoutes, req.path)
+  let matches = matchRoutes(listRoutes, req.path)
 
   const promises = matches.map(({ route }) => {
     return route.loadData ? route.loadData(store) : null
   })
 
   Promise.all(promises).then(() => {
-    res.send(renderer(req, store, matches))
+    res.send(renderer(req, store))
   })
 })
 

@@ -1,15 +1,12 @@
-import { renderMatches, matchRoutes, useLocation } from 'react-router-dom'
-import App from './pages/MainApp'
+import { renderRoutes} from 'react-router-config'
 import Home from './pages/Home'
 import LoginApp from './pages/LoginApp'
 
 const Index = () => {
-  const location = useLocation()
-  let matches = matchRoutes(ListRoutes, location.pathname)
-  return renderMatches(matches)
+  return renderRoutes(listRoutes)
 }
 
-export const ListRoutes = [
+export const listRoutes = [
   {
     ...App,
     routes: [

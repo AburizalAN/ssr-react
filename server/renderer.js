@@ -1,24 +1,24 @@
 import React from 'react'
 import * as ReactDOMServer from 'react-dom/server'
 import serialize from 'serialize-javascript'
-import { StaticRouter } from 'react-router-dom/server'
+import { StaticRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { renderMatches } from 'react-router'
+import { renderRoutes } from 'react-router-config'
 import App from '../src/App'
 import { ServerStyleSheet } from 'styled-components'
+import { listRoutes } from '../src/Routes'
 
 const sheet = new ServerStyleSheet()
 
-const renderer = (req, store, matches) => {
+const renderer = (req, store) => {
   const app = ReactDOMServer.renderToString(sheet.collectStyles(
     <Provider store={store}>
       <StaticRouter location={req.url}>
-        <App routes={() => renderMatches(matches)} />
+        <App routes={() => renderRoutes(listRoutes)} />
       </StaticRouter>
     </Provider>
   ))
   const styleTags = sheet.getStyleTags()
-  sheet.seal()
 
   return (`
     <!doctype html>
@@ -39,6 +39,7 @@ const renderer = (req, store, matches) => {
       </body>
     </html>
   `)
+  sheet.seal()
 }
 
 export default renderer
