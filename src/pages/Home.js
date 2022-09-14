@@ -13,8 +13,6 @@ const Home = ({ route }) => {
   const dispatch = useDispatch()
   const { users } = useSelector((state) => state.global)
 
-  console.log("route check", route)
-
   
   useEffect(() => {
     dispatch(fetchDataUsers())

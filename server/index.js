@@ -21,13 +21,9 @@ app.get('/favicon.ico', (req, res) => res.status(204))
 app.get('*', (req, res) => {
   const store = storeServer(req)
   let matches = matchRoutes(listRoutes, req.path)
-
-  console.log('matches', matches)
-
   const promises = matches.map(({ route }) => {
     return route.loadData ? route.loadData(store) : null
   })
-
   Promise.all(promises).then(() => {
     res.send(renderer(req, store))
   })
