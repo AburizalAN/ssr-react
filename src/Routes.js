@@ -1,4 +1,5 @@
 import { renderMatches, matchRoutes, useLocation } from 'react-router-dom'
+import App from './pages/MainApp'
 import Home from './pages/Home'
 import LoginApp from './pages/LoginApp'
 
@@ -10,13 +11,18 @@ const Index = () => {
 
 export const ListRoutes = [
   {
-    ...Home,
-    path: '/',
-    exact: true,
-  },
-  {
-    ...LoginApp,
-    path: '/login',
+    ...App,
+    routes: [
+      {
+        ...Home,
+        path: '/',
+        exact: true,
+      },
+      {
+        ...LoginApp,
+        path: '/login',
+      },
+    ]
   },
 ]
 
