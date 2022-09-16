@@ -10,10 +10,10 @@ import { listRoutes } from '../src/Routes'
 
 const sheet = new ServerStyleSheet()
 
-const renderer = (req, store) => {
+const renderer = (req, store, context) => {
   const app = ReactDOMServer.renderToString(sheet.collectStyles(
     <Provider store={store}>
-      <StaticRouter location={req.url}>
+      <StaticRouter location={req.url} context={context}>
         <App routes={() => renderRoutes(listRoutes)} />
       </StaticRouter>
     </Provider>
