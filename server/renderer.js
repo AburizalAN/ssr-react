@@ -7,6 +7,7 @@ import { renderRoutes } from 'react-router-config'
 import App from '../src/App'
 import { ServerStyleSheet } from 'styled-components'
 import { listRoutes } from '../src/Routes'
+import { Helmet } from "react-helmet"
 
 const sheet = new ServerStyleSheet()
 
@@ -19,6 +20,7 @@ const renderer = (req, store, context) => {
     </Provider>
   ))
   const styleTags = sheet.getStyleTags()
+  const helmet = Helmet.renderStatic()
 
   return (`
     <!doctype html>
@@ -27,19 +29,19 @@ const renderer = (req, store, context) => {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>This is Secret Project</title>
-        <script>
-          window.INITIAL_STATE = ${serialize(store.getState())}
-        </script>
-        <script defer="defer" src="bundle.js"></script>
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
         ${styleTags}
       </head>
       <body>
         <div id="root">${app}</div>
+        <script>
+          window.INITIAL_STATE = ${serialize(store.getState())}
+        </script>
+        <script defer="defer" src="bundle.js"></script>
       </body>
     </html>
   `)
-  sheet.seal()
 }
 
 export default renderer
